@@ -1,7 +1,8 @@
 //Proyecto 2: Juego de Tres en Raya (Tic-Tac-Toe)
 //Crea un juego de tres en raya que permita a dos jugadores jugar por turnos.
-function empezar(arreglo = [ [ ["  "],["  "],["  "] ], [ ["  "],["  "],["  "] ], [ ["  "],["  "],["  "] ]  ], contador = 0, sumaX = 0){
+function empezar(arreglo = [ [ "  ","  ","  " ], [ "  ","  ","  " ], [ "  ","  ","  " ]  ], contador = 0){
   if (contador === 0) {
+    arreglo = [ [ "  ","  ","  " ], [ "  ","  ","  " ], [ "  ","  ","  " ]  ];
     alert("Bienvenido a el Juego de Tres en Raya");
   }
   let imprimirFila = "Por Favor ingrese la posición de la fila: \n\n";
@@ -18,8 +19,14 @@ function empezar(arreglo = [ [ ["  "],["  "],["  "] ], [ ["  "],["  "],["  "] ],
   else {
     marca = "O"
   }
-  arreglo[fila][columna] = marca;
-  if (contador >= 4) {
+  if (arreglo[fila-1][columna-1] === "  ") {
+    arreglo[fila-1][columna-1] = marca;
+  } 
+  else {
+    alert("¡Ya la casilla está ocupada!");
+    empezar(arreglo, contador);
+  }
+  /*if (contador >= 4) {
       arreglo[1].map(
         (caja) => {
           if (caja == marca) {
@@ -30,7 +37,41 @@ function empezar(arreglo = [ [ ["  "],["  "],["  "] ], [ ["  "],["  "],["  "] ],
     }
   if (sumaX === 3) {
     alert("Ganó la " + marca);
+  }*/
+  function recorrerFila(contador = 0, sumaX = 0) {
+    if (contador >= arreglo[0].length) {
+      return;
+    }
+    arreglo[contador].map(
+      (caja) => {
+        if (caja == marca) {
+          sumaX = sumaX + 1;
+        }
+      }
+    )
+    if (sumaX === 3) {
+      alert("Ganastes " + marca);
+      return contador = 3;
+    }
+    recorrerFila(contador + 1);
   }
+  recorrerFila();
+  function recorrerColumna(contador = 0) {
+    if (contador >= 3) {
+      return;
+    }
+    if (arreglo[0][contador] === marca && arreglo[1][contador] === marca && arreglo[2][contador] === marca) {
+      alert("Ganastes " + marca);
+    }
+    recorrerColumna(contador + 1);
+  }
+  recorrerColumna();
+  function recorrerDiagonal(){
+    if ((arreglo[0][0] === marca && arreglo[1][1] === marca && arreglo[2][2] === marca) || (arreglo[0][2] === marca && arreglo[1][1] === marca && arreglo[2][0] === marca)) {
+      alert("Ganastes " + marca);
+    }
+  }
+  recorrerDiagonal();
   empezar(arreglo, contador + 1);
 }
 
